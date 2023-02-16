@@ -14,7 +14,7 @@
   return totalNumber;
 } */
 
-function getLength (totalJumpDistance: number[]): number {
+export function getLength (totalJumpDistance: number[]): number {
   return totalJumpDistance.reduce((jumpDistanceSoFar, currentJump) => jumpDistanceSoFar + currentJump);
 };
 
@@ -45,7 +45,7 @@ function getStudentStatus(student: Student): string {
   }
 }*/
 
-class Student {
+export class Student {
   constructor (
     public name: string,
     public handedInOnTime: boolean,
@@ -53,7 +53,7 @@ class Student {
   ) {};
 };
 
-function getStudentStatus(student: Student): string {
+export function getStudentStatus(student: Student): string {
   if (student.name === 'Sebastian') {
     if (student.handedInOnTime) {
       if (student.passed) {
@@ -95,7 +95,7 @@ function averageWeeklyTemperature(heights: Temp[]) {
   return r / 7;
 } */
 
-class Temperature {
+export class Temperature {
   constructor (
     public location: string, 
     public time: Date, 
@@ -103,7 +103,7 @@ class Temperature {
     ) {};
 };
 
-function averageWeeklyTemperature (measurements: Temperature[]) {
+export function averageWeeklyTemperature (measurements: Temperature[]) {
   let sumOfTemperatures = 0;
 
   for (let i = 0; i < measurements.length; i++) {
@@ -143,7 +143,7 @@ function averageWeeklyTemperature (measurements: Temperature[]) {
   parent.appendChild(container);
 } */
 
-class Product {
+export class Product {
   constructor (
     public name: string,
     public price: number,
@@ -154,7 +154,7 @@ class Product {
   ) {};
 };
 
-function showProduct(product: Product): HTMLDivElement {
+export function showProduct(product: Product): HTMLDivElement {
   const container = document.createElement('div');
   const title = document.createElement('h4');
   const price = document.createElement('strong');
@@ -200,7 +200,7 @@ function showProduct(product: Product): HTMLDivElement {
   }
 } */
 
-function presentStudents(students: Student[]) {
+export function presentStudents(students: Student[]) {
   const listOfPassedStudents = document.querySelector<HTMLUListElement>('#passedstudents');
   const listOfFailedStudents = document.querySelector<HTMLUListElement>('#failedstudents');
 
@@ -241,7 +241,7 @@ function presentStudents(students: Student[]) {
   return result;
 } */
 
-function concatenateStrings() {
+export function concatenateStrings() {
   return `${'Lorem'} ${'ipsum'} ${'dolor'} ${'sit'} ${'amet'}`;
 };
 
@@ -272,7 +272,7 @@ function concatenateStrings() {
   }
 } */
 
-class User {
+export class User {
   constructor (
     public name: string,
     public birthday: Date,
@@ -281,7 +281,7 @@ class User {
   ) {};
 };
 
-function createUser(user: User) {
+export function createUser(user: User) {
   const ageDiff = Date.now() - user.birthday.getTime();
   const ageDate = new Date(ageDiff);
   const userAge = Math.abs(ageDate.getUTCFullYear() - 1970);

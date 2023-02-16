@@ -1,7 +1,7 @@
 /*
 1. Se om du kan hitta problem med koden nedan och se om du kan göra den bättre.
 */
-export enum Sort {
+/* export enum Sort {
   PRICE_ASCENDING = "Stigande pris",
   PRICE_DECENDING = "Sjunkande pris",
   NAME_ALPHABETIC = "Alfabetisk ordning",
@@ -62,6 +62,45 @@ function sortList(whichAttribute: string, products: Product[]): Product[] {
       return 0;
     }
   });
+} */
+
+export enum Sort {
+  PRICE_ASCENDING = "Stigande pris",
+  PRICE_DECENDING = "Sjunkande pris",
+  NAME_ALPHABETIC = "Alfabetisk ordning",
+  NAME_ALPHABETIC_REVERSE = "Omvänd alfabetisk ordning",
+}
+
+export class Product {
+  constructor(
+    public id: number,
+    public name: string,
+    public imageUrl: string[],
+    public price: number,
+    public description: string
+  ) {
+    this.id = id;
+    this.name = name;
+    this.imageUrl = imageUrl;
+    this.price = price;
+    this.description = description;
+  }
+}
+
+export function sortProductsBy(sort: Sort, products: Product[]): Product[] {
+  let sortedList: Product[] = [];
+
+  if (sort === Sort.PRICE_ASCENDING) {
+    sortedList = products.sort((a, b) => (a.price > b.price) ? 1 : (a.price === b.price) ? 0 : -1);
+  } else if (sort === Sort.PRICE_DECENDING) {
+    sortedList = products.sort((a, b) => (b.price > a.price) ? 1 : (a.price === b.price) ? 0 : -1);
+  } else if (sort === Sort.NAME_ALPHABETIC) {
+    sortedList = products.sort((a, b) => (a.name > b.name) ? 1 : (a.name === b.name) ? 0 : -1);
+  } else if (sort === Sort.NAME_ALPHABETIC_REVERSE) {
+    sortedList = products.sort((a, b) => (b.name > a.name) ? 1 : (a.name === b.name) ? 0 : -1);
+  }
+
+  return sortedList;
 }
 
 /*

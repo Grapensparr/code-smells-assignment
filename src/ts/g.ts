@@ -4,7 +4,7 @@
   dessa hopplängder.
   */
 
-function getLength(jumpings: number[]): number {
+/* function getLength(jumpings: number[]): number {
   let totalNumber = 0;
 
   totalNumber = jumpings.reduce(
@@ -12,19 +12,23 @@ function getLength(jumpings: number[]): number {
   );
 
   return totalNumber;
-}
+} */
+
+function getLength (totalJumpDistance: number[]): number {
+  return totalJumpDistance.reduce((jumpDistanceSoFar, currentJump) => jumpDistanceSoFar + currentJump);
+};
 
 /*
   2. I detta exempel har vi fokuserat på if-statements. Se om du kan göra exemplet bättre!
   */
 
-class Student {
+/* class Student {
   constructor(
     public name: string,
     public handedInOnTime: boolean,
     public passed: boolean
   ) {}
-}
+} 
 
 function getStudentStatus(student: Student): string {
   student.passed =
@@ -39,14 +43,41 @@ function getStudentStatus(student: Student): string {
   } else {
     return "IG";
   }
-}
+}*/
+
+class Student {
+  constructor (
+    public name: string,
+    public handedInOnTime: boolean,
+    public passed: boolean
+  ) {};
+};
+
+function getStudentStatus(student: Student): string {
+  if (student.name === 'Sebastian') {
+    if (student.handedInOnTime) {
+      if (student.passed) {
+        return 'VG';
+      } else {
+        student.passed = false;
+        return 'IG';
+      };
+    } else {
+      student.passed = false;
+      return 'IG';
+    };
+  } else {
+    student.passed = false;
+    return 'IG';
+  };
+};
 
 /*
   3. Variabelnamn är viktiga. Kika igenom följande kod och gör om och rätt.
   Det finns flera code smells att identifiera här. Vissa är lurigare än andra.
   */
 
-class Temp {
+/* class Temp {
   constructor(public q: string, public where: Date, public v: number) {}
 }
 
@@ -62,14 +93,34 @@ function averageWeeklyTemperature(heights: Temp[]) {
   }
 
   return r / 7;
-}
+} */
+
+class Temperature {
+  constructor (
+    public location: string, 
+    public time: Date, 
+    public temperature: number
+    ) {};
+};
+
+function averageWeeklyTemperature (measurements: Temperature[]) {
+  let sumOfTemperatures = 0;
+
+  for (let i = 0; i < measurements.length; i++) {
+    if (measurements[i].location === 'Stockholm' && measurements[i].time.getTime() >= Date.now() - 604800000) {
+      sumOfTemperatures += measurements[i].temperature;
+    };
+  };
+
+  return sumOfTemperatures / 7;
+};
 
 /*
   4. Följande funktion kommer att presentera ett objekt i dom:en. 
   Se om du kan göra det bättre. Inte bara presentationen räknas, även strukturer.
   */
 
-function showProduct(
+/* function showProduct(
   name: string,
   price: number,
   amount: number,
@@ -90,7 +141,36 @@ function showProduct(
   container.appendChild(imageTag);
   container.appendChild(pris);
   parent.appendChild(container);
-}
+} */
+
+class Product {
+  constructor (
+    public name: string,
+    public price: number,
+    public amount: number,
+    public description: string,
+    public image: string,
+    public parent: HTMLDivElement
+  ) {};
+};
+
+function showProduct(product: Product): HTMLDivElement {
+  const container = document.createElement('div');
+  const title = document.createElement('h4');
+  const price = document.createElement('strong');
+  const image = document.createElement('img');
+
+  title.textContent = product.name;
+  price.textContent = product.price.toString();
+  image.src = product.image;
+
+  container.appendChild(title);
+  container.appendChild(image);
+  container.appendChild(price);
+  product.parent.appendChild(container);
+
+  return container;
+};
 
 /*
   5. Följande funktion kommer presentera studenter. Men det finns ett antal saker som 

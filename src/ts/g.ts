@@ -176,7 +176,7 @@ function showProduct(product: Product): HTMLDivElement {
   5. Följande funktion kommer presentera studenter. Men det finns ett antal saker som 
   går att göra betydligt bättre. Gör om så många som du kan hitta!
   */
-function presentStudents(students: Student[]) {
+/* function presentStudents(students: Student[]) {
   for (const student of students) {
     if (student.handedInOnTime) {
       let container = document.createElement("div");
@@ -198,14 +198,39 @@ function presentStudents(students: Student[]) {
       listOfStudents?.appendChild(container);
     }
   }
-}
+} */
+
+function presentStudents(students: Student[]) {
+  const listOfPassedStudents = document.querySelector<HTMLUListElement>('#passedstudents');
+  const listOfFailedStudents = document.querySelector<HTMLUListElement>('#failedstudents');
+
+  for (const student of students) {
+    const container = document.createElement('div');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    
+    if (student.handedInOnTime && student.passed) {
+      checkbox.checked = true;
+      container.appendChild(checkbox);
+      listOfPassedStudents?.appendChild(container);
+    } else if (student.handedInOnTime && !student.passed) {
+      checkbox.checked = false;
+      container.appendChild(checkbox);
+      listOfFailedStudents?.appendChild(container);
+    } else if (!student.handedInOnTime) {
+      checkbox.checked = false;
+      container.appendChild(checkbox);
+      listOfFailedStudents?.appendChild(container);
+    };
+  };
+};
 
 /*
   6. Skriv en funktion som skall slå ihop följande texter på ett bra sätt:
   Lorem, ipsum, dolor, sit, amet
   Exemplet under löser problemet, men inte speciellt bra. Hur kan man göra istället?
   */
-function concatenateStrings() {
+/* function concatenateStrings() {
   let result = "";
   result += "Lorem";
   result += "ipsum";
@@ -214,7 +239,11 @@ function concatenateStrings() {
   result += "amet";
 
   return result;
-}
+} */
+
+function concatenateStrings() {
+  return `${'Lorem'} ${'ipsum'} ${'dolor'} ${'sit'} ${'amet'}`;
+};
 
 /* 
 7. Denna funktion skall kontrollera att en användare är över 20 år och göra någonting.
@@ -222,7 +251,7 @@ function concatenateStrings() {
     fler och fler parametrar behöver läggas till? T.ex. avatar eller adress. Hitta en bättre
     lösning som är hållbar och skalar bättre. 
 */
-function createUser(
+/* function createUser(
   name: string,
   birthday: Date,
   email: string,
@@ -241,4 +270,25 @@ function createUser(
   } else {
     return "Du är under 20 år";
   }
-}
+} */
+
+class User {
+  constructor (
+    public name: string,
+    public birthday: Date,
+    public email: string,
+    public password: string
+  ) {};
+};
+
+function createUser(user: User) {
+  const ageDiff = Date.now() - user.birthday.getTime();
+  const ageDate = new Date(ageDiff);
+  const userAge = Math.abs(ageDate.getUTCFullYear() - 1970);
+
+  if ((userAge >= 20)) {
+    // Logik för att skapa en användare
+  } else {
+    return 'Du är under 20 år';
+  };
+};

@@ -77,13 +77,23 @@ export class Product {
     public name: string,
     public imageUrl: string[],
     public price: number,
-    public description: string
+    public description: string,
+    public info: string,
+    public productSpec: boolean,
+    public category: string,
+    public picture: string,
+    public pictureAlt: string
   ) {
     this.id = id;
     this.name = name;
     this.imageUrl = imageUrl;
     this.price = price;
     this.description = description;
+    this.info = info;
+    this.productSpec = productSpec;
+    this.category = category;
+    this.picture = picture;
+    this.pictureAlt = pictureAlt;
   }
 }
 
@@ -106,7 +116,7 @@ export function sortProductsBy(sort: Sort, products: Product[]): Product[] {
 /*
   2. Refaktorera funktionen createProductHtml :)
   */
-class Cart {
+/* class Cart {
   addToCart(i: number) {}
 }
 export let cartList = JSON.parse(localStorage.getItem("savedCartList") || "[]");
@@ -208,7 +218,94 @@ export function createProductHtml() {
   let listastext = JSON.stringify(productList);
   localStorage.setItem("savedList", listastext);
   sessionStorage.clear();
-}
+} */
+
+export class Cart {
+  addToCart(i: number) 
+  {};
+};
+
+const cartList = JSON.parse(localStorage.getItem('savedCartList') || '[]');
+const productList = JSON.parse(localStorage.getItem('savedList') || '[]');
+
+export function createDogProduct(product: Product) {
+  const dogproduct = document.createElement('div');
+  dogproduct.className = 'dogproduct';
+  
+  const dogImgContainer = document.createElement('div');
+  dogImgContainer.className = 'dogimgcontainer';
+  dogproduct.appendChild(dogImgContainer);
+
+  const dogImg = document.createElement('img');
+  dogImg.src = product.picture;
+  dogImg.alt = product.pictureAlt;
+
+  dogImg.addEventListener('mouseover', () => {
+    cartSymbolContainer.classList.add('hover');
+    dogImg.classList.add('hover');
+  });
+
+  dogImg.addEventListener('mouseout', () => {
+    dogImg.classList.remove('hover');
+    cartSymbolContainer.classList.remove('hover');
+  });
+
+  dogImgContainer.appendChild(dogImg);
+
+  const cartSymbolContainer = document.createElement('div');
+  cartSymbolContainer.className = 'cartSymbolContainer';
+  dogImgContainer.appendChild(cartSymbolContainer);
+
+  const cartSymbol = document.createElement('i');
+  cartSymbol.className = 'bi bi-bag-plus';
+  cartSymbol.addEventListener('click', () => {
+    const cart = new Cart();
+    cart.addToCart(product.id);
+  });
+
+  cartSymbolContainer.appendChild(cartSymbol);
+
+  const name = document.createElement('h5');
+  name.innerHTML = product.name;
+  dogproduct.appendChild(name);
+
+  const price = document.createElement('p');
+  price.innerHTML = `$ ${product.price}`;
+  dogproduct.appendChild(price);
+
+  const info = document.createElement('p');
+  info.innerHTML = product.info;
+  dogproduct.appendChild(info);
+
+  product.productSpec = false;
+
+  dogImg.addEventListener('click', () => {
+    product.productSpec = !product.productSpec;
+    window.location.href = 'product-spec.html#backArrow';
+    localStorage.setItem('savedList', JSON.stringify(productList));
+  });
+
+  const category = document.getElementById(product.category) as HTMLElement;
+  category.appendChild(dogproduct);
+};
+
+export function floatingCartNumber() {
+  let quantity = 0;
+  for (let i = 0; i < cartList.length; i++) {
+    quantity += cartList[i].quantity;
+  };
+  const floatingCart = document.getElementById('floatingcartnumber') as HTMLElement;
+  floatingCart.innerHTML = `${quantity}`;
+};
+
+export function createProductHtml() {
+  floatingCartNumber();
+
+  productList.forEach(createDogProduct);
+
+  localStorage.setItem('savedList', JSON.stringify(productList));
+  sessionStorage.clear();
+};
 
 /*
   3. Refaktorera funktionen getfromstorage

@@ -54,20 +54,9 @@ export class Student {
 };
 
 export function getStudentStatus(student: Student): string {
-  if (student.name === 'Sebastian') {
-    if (student.handedInOnTime) {
-      if (student.passed) {
-        return 'VG';
-      } else {
-        student.passed = false;
-        return 'IG';
-      };
-    } else {
-      student.passed = false;
-      return 'IG';
-    };
+  if (student.name === 'Sebastian' && student.handedInOnTime && student.passed) {
+    return 'VG';
   } else {
-    student.passed = false;
     return 'IG';
   };
 };
@@ -104,15 +93,17 @@ export class Temperature {
 };
 
 export function averageWeeklyTemperature (measurements: Temperature[]) {
+  const oneWeekAgo = Date.now() - 604800000;
+  const oneWeek = 7;
   let sumOfTemperatures = 0;
 
   for (let i = 0; i < measurements.length; i++) {
-    if (measurements[i].location === 'Stockholm' && measurements[i].time.getTime() >= Date.now() - 604800000) {
+    if (measurements[i].location === 'Stockholm' && measurements[i].time.getTime() >= oneWeekAgo) {
       sumOfTemperatures += measurements[i].temperature;
     };
   };
 
-  return sumOfTemperatures / 7;
+  return sumOfTemperatures / oneWeek;
 };
 
 /*
@@ -213,11 +204,7 @@ export function presentStudents(students: Student[]) {
       checkbox.checked = true;
       container.appendChild(checkbox);
       listOfPassedStudents?.appendChild(container);
-    } else if (student.handedInOnTime && !student.passed) {
-      checkbox.checked = false;
-      container.appendChild(checkbox);
-      listOfFailedStudents?.appendChild(container);
-    } else if (!student.handedInOnTime) {
+    } else {
       checkbox.checked = false;
       container.appendChild(checkbox);
       listOfFailedStudents?.appendChild(container);

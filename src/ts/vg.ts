@@ -270,7 +270,7 @@ export function createDogProduct(product: Product) {
   dogproduct.appendChild(name);
 
   const price = document.createElement('p');
-  price.innerHTML = `$ ${product.price}`;
+  price.innerHTML = `$${product.price}`;
   dogproduct.appendChild(price);
 
   const info = document.createElement('p');
@@ -310,7 +310,7 @@ export function createProductHtml() {
 /*
   3. Refaktorera funktionen getfromstorage
   */
-export class CartProduct {
+/* export class CartProduct {
   constructor(
     public name: string,
     public image: string,
@@ -397,4 +397,68 @@ function getfromstorage() {
   checkkouttotal2.appendChild(totalprice2);
   totalprice2.innerHTML = addition + "$";
   totalprice2.id = "totalincenter";
-}
+} */
+
+export class CartProduct {
+  constructor(
+    public name: string,
+    public image: string,
+    public price: number,
+    public amount: number
+  ) {};
+};
+
+export function getFromStorage() {
+  const fromStorage: string = localStorage.getItem('cartArray') || '';
+  const cartProducts: CartProduct[] = JSON.parse(fromStorage);
+
+  const titleContainer = document.getElementById('title-container') as HTMLTableRowElement;
+  titleContainer.innerHTML = '<strong>Products:</strong>';
+
+  const amountContainer = document.getElementById('amount-checkout-container2') as HTMLDivElement;
+  amountContainer.innerHTML = '<th>Amount:</th>';
+
+  const productQuantity = document.getElementById('product-quantity') as HTMLTableRowElement;
+  productQuantity.innerHTML = '<th>Change quantity:</th>';
+
+  const checkoutTotal = document.getElementById('title-total') as HTMLTableCellElement;
+  checkoutTotal.innerHTML = '<th>Total:</th>';
+
+  for (let i: number = 0; i < cartProducts.length; i++) {
+    const productTitle: HTMLTableCellElement = document.createElement('th');
+    productTitle.className = 'product';
+    productTitle.innerHTML = cartProducts[i].name;
+    titleContainer.appendChild(productTitle);
+
+    const productAmount: HTMLTableCellElement = document.createElement('th');
+    productAmount.className = 'product';
+    productAmount.innerHTML = '' + cartProducts[i].amount;
+    amountContainer.appendChild(productAmount);
+
+    const quantity: HTMLTableCellElement = document.createElement('th');
+    quantity.className = 'product';
+    productQuantity.appendChild(quantity);
+
+    const amountPlusBtn: HTMLButtonElement = document.createElement('button');
+    const amountMinusBtn: HTMLButtonElement = document.createElement('button');
+    const plusIcon = document.createElement('i');
+    const minusIcon = document.createElement('i');
+
+    amountPlusBtn.className = 'plusbtn';
+    amountMinusBtn.className = 'minusbtn';
+    plusIcon.className = 'fas fa-plus';
+    minusIcon.className = 'fas fa-minus';
+
+    quantity.appendChild(amountPlusBtn);
+    quantity.appendChild(amountMinusBtn);
+    amountPlusBtn.appendChild(plusIcon);
+    amountMinusBtn.appendChild(minusIcon);
+  };
+
+  const totalPrice = cartProducts.reduce((total, product) => total + product.price * product.amount, 0);
+
+  const totalPriceCell: HTMLTableCellElement = document.createElement('th');
+  totalPriceCell.innerHTML = `$${totalPrice}`;
+  totalPriceCell.id = 'totalPrice';
+  checkoutTotal.appendChild(totalPriceCell);
+};
